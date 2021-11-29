@@ -1,43 +1,32 @@
-const todoObjectList = [];
+const express =  require('express');
+const app = express();
+const cors = require('cors');
+const mysql = require('mysql');
+const con = mysql.createConnection({
+            database:'funcionario',
+            host:'localhost',
+            user:'root'
+});
 
-class Toda_Class {
-            constructor(item){
-                        this.ulElement = item;
-            }
-            add(){
-            }
-            done_undone(){
-            }
-            deleteElement(){
-            }
-            display(){
-            }
-}
-            const listSelection = document.querySelector("#myUL");
-                        myTodoList = new Todo_Class(listSelection);
+app.user(cors());
+app.use(express.json());
 
-                        document.querySelector(".addBtn").addEventListener("click", function(){
-                        myTodoList.add()
-                        })
-                        add(){
-                                    const todoInput = document.querySelector("#myInput").value;
-                                    if (todoInput =="") {
-                                    alert("")
-                                    } else{
-                                                const todoObjec = {
-                                                            id : todoObjectList.length,
-                                                            todotext : todoInput,
-                                                            isDone : false,
-                                    }
-                                    todoObjectList.unshift(todoObject);
-                                    this.display();
-                                    document.querySelector("#myInput").value = '';
-                                    }
-            }
-            display(){
-                        this.ulElement.innerHTML = "";
-                        todoObjectList.forEach((Object_item)) = >{
-                                    const liElement = document.createElement("li");
-                                    const delBtn = document.createElement("i");
-                        }
-            }
+app.get('/api/',(req,res)=>{
+        let string = 'select * from funcionario'
+        con.query(string,(err, result)=>{
+                if(err) throw err;
+                res.json(result);
+            })
+});
+
+app.get('/id/:id',(req, res)=>{
+        let string = 'select * from funcionario where matricula = '+req.params.id;
+        con.query(string,(err, result)=>{
+            if(err) throw err;
+            res.json(result);
+            });
+        });
+
+app.listen(3000,()=>{
+    console.log('Rodando na porta 3000')
+});
